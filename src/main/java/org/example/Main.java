@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -7,18 +9,16 @@ public class Main {
         System.out.println("== 프로그램 시작 ==");
         Scanner sc = new Scanner(System.in);
 
-        // 게시물의 ID 번호 세팅
         int lastArticleId = 0;
 
-        // while(true)는 무한루프다.
+        // 게시물을 담을 배열 생성
+        List<Article> articles = new ArrayList<>();
+
         while(true) {
             System.out.printf("명령어) ");
             String cmd = sc.nextLine();
-
-            // 양 옆 공백은 trim으로 제거
             cmd = cmd.trim();
 
-            // 아무것도 입력하지 않으면(입력된 cmd의 길이가 0이면) 다음 줄로 넘어감.
             if(cmd.length() == 0) {
                 continue;
             }
@@ -35,11 +35,30 @@ public class Main {
                 System.out.printf("내용 : ");
                 String body = sc.nextLine();
 
+                // articles 배열에 담을 개개인의 게시물 객체 생성
+                // 생성자를 통해 입력한 제목, 내용과 고유 번호를 저장
+                Article article = new Article(id, title, body);
+
+                // 배열에 게시물 넣기
+                articles.add(article);
+
                 System.out.printf("%d번 게시물이 생성되었습니다.\n", id);
             }
-
             else if(cmd.equals("article list")) {
-                System.out.println("게시물이 없습니다.");
+                // 만약 articles가 비어있다면 게시물이 없다고 출력
+                if(articles.size() == 0) {
+                    System.out.println("게시물이 없습니다.");
+                    continue;
+                }
+
+                System.out.println("번호 | 제목");
+                // for문은 가장 최근에 작성된 게시물이 위로 올라가게 보폭 설정
+                for(int i = articles.size() - 1; i >= 0 ; i--) {
+                    // article 변수에 차레대로 가져오기
+                    Article article = articles.get(i);
+
+                    System.out.printf("%d    | %s\n", article.id, article.title);
+                }
             }
             else {
                 System.out.printf("%s(은)는 존재하지 않는 명령어 입니다.\n", cmd);
@@ -48,5 +67,17 @@ public class Main {
 
         sc.close();
         System.out.println("== 프로그램 끝 ==");
+    }
+}
+
+class Article {
+    int id;
+    String title;
+    String body;
+
+    public Article(int id, String title, String body) {
+        this.id = id;
+        this.title = title;
+        this.body = body;
     }
 }

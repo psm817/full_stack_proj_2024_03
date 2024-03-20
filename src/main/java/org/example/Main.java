@@ -1,6 +1,5 @@
 package org.example;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -31,12 +30,13 @@ public class Main {
             if(cmd.equals("article write")) {
                 int id = lastArticleId + 1;
                 lastArticleId = id;
+
+                // Util.java에서 만든 getNowDateStr()을 호출하여 regDate에 저장
+                String regDate = Util.getNowDateStr();
                 System.out.printf("제목 : ");
                 String title = sc.nextLine();
                 System.out.printf("내용 : ");
                 String body = sc.nextLine();
-
-                SimpleDateFormat regDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
                 Article article = new Article(id, title, body, regDate);
 
@@ -94,13 +94,11 @@ public class Main {
 
                 int id = Integer.parseInt(cmdBits[2]);
 
-                // 게시물 고유 번호를 찾기위한 변수 생성
                 int foundIndex = -1;
 
                 for(int i = 0; i < articles.size(); i++) {
                     Article article = articles.get(i);
 
-                    // 만약에 입력한 번호와 게시물의 번호가 같다면 foundIndex에 해당 번호를 저장
                     if(article.id == id) {
                         foundIndex = i;
                         break;
@@ -112,8 +110,6 @@ public class Main {
                     continue;
                 }
 
-                // index : 0, 1, 2 ....
-                // id    : 1, 2, 3 ....
                 articles.remove(foundIndex);
                 System.out.printf("%d번 게시물이 삭제되었습니다.\n", id);
             }
@@ -134,10 +130,10 @@ class Article {
     String body;
     String regDate;
 
-    public Article(int id, String title, String body, SimpleDateFormat regDate) {
+    public Article(int id, String title, String body, String regDate) {
         this.id = id;
         this.title = title;
         this.body = body;
-        this.regDate = regDate.format(System.currentTimeMillis());
+        this.regDate = regDate;
     }
 }

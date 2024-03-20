@@ -36,7 +36,6 @@ public class Main {
                 System.out.printf("내용 : ");
                 String body = sc.nextLine();
 
-                // 게시물 작성했을 때 현재날짜 가져오기
                 SimpleDateFormat regDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
                 Article article = new Article(id, title, body, regDate);
@@ -62,16 +61,11 @@ public class Main {
             }
 
             // ===== 게시물 상세 조회 =====
-            // startsWith는 시작된 문자열이 같은지 확인
             else if(cmd.startsWith("article detail ")) {
-                // split(" ")을 사용해서 공백을 기준으로 cmd를 쪼갠다는 뜻이다.
-                // 게시물 번호를 빼내기 위해서 사용한다.
                 String[] cmdBits = cmd.split(" ");
 
-                // 문자열로 되어있는 숫자를 int화 시키는 작업
                 int id = Integer.parseInt(cmdBits[2]);
 
-                // 게시물이 있는지 없는지 확인하는 게시물 생성
                 Article foundArticle = null;
 
                 for(int i = 0; i < articles.size(); i++) {
@@ -79,11 +73,10 @@ public class Main {
 
                     if(article.id == id) {
                         foundArticle = article;
+                        break;
                     }
                 }
 
-                // 만약 게시물이 없다면 존재하지 않는다는 출력문 출력한다.
-                // continue를 사용하면 다시 위로 올라가서 명령어를 입력하게 된다.
                 if(foundArticle == null) {
                     System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
                     continue;
@@ -93,6 +86,36 @@ public class Main {
                 System.out.printf("날짜 : %s\n", foundArticle.regDate);
                 System.out.printf("제목 : %s\n", foundArticle.title);
                 System.out.printf("내용 : %s\n", foundArticle.body);
+            }
+
+            // ===== 게시물 삭제 =====
+            else if(cmd.startsWith("article delete ")) {
+                String[] cmdBits = cmd.split(" ");
+
+                int id = Integer.parseInt(cmdBits[2]);
+
+                // 게시물 고유 번호를 찾기위한 변수 생성
+                int foundIndex = -1;
+
+                for(int i = 0; i < articles.size(); i++) {
+                    Article article = articles.get(i);
+
+                    // 만약에 입력한 번호와 게시물의 번호가 같다면 foundIndex에 해당 번호를 저장
+                    if(article.id == id) {
+                        foundIndex = i;
+                        break;
+                    }
+                }
+
+                if(foundIndex == -1) {
+                    System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
+                    continue;
+                }
+
+                // index : 0, 1, 2 ....
+                // id    : 1, 2, 3 ....
+                articles.remove(foundIndex);
+                System.out.printf("%d번 게시물이 삭제되었습니다.\n", id);
             }
 
             else {

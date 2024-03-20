@@ -5,27 +5,48 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         System.out.println("== 프로그램 시작 ==");
-
-        // 스캐너는 키보드로 입력 값을 받는 클래스이다.
-        // nextLine()을 하게 되면 키보드로 입력하고 enter를 치면 콘솔의 다음 라인으로 넘어간다.
-        // next는 띄어쓰기를 허용하지 않고, nextLine은 띄어쓰기를 허용한다.
-        // next에서 띄어쓰기를 하고 입력을 추가로 한다면 해당 입력 값은 다음 값으로 출력된다.
         Scanner sc = new Scanner(System.in);
 
-        // 프로그램에 명령어를 입력하라는 안내문 -> 사용자를 위한 편의성
-        System.out.printf("명령어) ");
-        String cmd = sc.nextLine();
-        System.out.printf("입력된 명령어 : %s\n", cmd);
+        // 게시물의 ID 번호 세팅
+        int lastArticleId = 0;
 
-        // nextInt는 오직 숫자만 입력할 수 있다.
-        // nextInt는 enter가 잘 작동을 안할 수도 있기 때문에 항상 다음 줄에 nextLine을 작성한다.
-        System.out.printf("명령어) ");
-        int num = sc.nextInt();
-        System.out.printf("입력된 명령어 : %d\n", num);
+        // while(true)는 무한루프다.
+        while(true) {
+            System.out.printf("명령어) ");
+            String cmd = sc.nextLine();
 
-        // 스캐너를 생성하면 close로 항상 닫아줘야한다.
+            // 양 옆 공백은 trim으로 제거
+            cmd = cmd.trim();
+
+            // 아무것도 입력하지 않으면(입력된 cmd의 길이가 0이면) 다음 줄로 넘어감.
+            if(cmd.length() == 0) {
+                continue;
+            }
+
+            if(cmd.equals("exit")) {
+                break;
+            }
+
+            if(cmd.equals("article write")) {
+                int id = lastArticleId + 1;
+                lastArticleId = id;
+                System.out.printf("제목 : ");
+                String title = sc.nextLine();
+                System.out.printf("내용 : ");
+                String body = sc.nextLine();
+
+                System.out.printf("%d번 게시물이 생성되었습니다.\n", id);
+            }
+
+            else if(cmd.equals("article list")) {
+                System.out.println("게시물이 없습니다.");
+            }
+            else {
+                System.out.printf("%s(은)는 존재하지 않는 명령어 입니다.\n", cmd);
+            }
+        }
+
         sc.close();
-
         System.out.println("== 프로그램 끝 ==");
     }
 }

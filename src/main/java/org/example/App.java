@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.dto.Article;
+import org.example.dto.Member;
 import org.example.util.Util;
 
 import java.util.ArrayList;
@@ -9,9 +10,11 @@ import java.util.Scanner;
 
 public class App {
     private List<Article> articles;
+    private List<Member> members;
 
     App() {
         articles = new ArrayList<>();
+        members = new ArrayList<>();
     }
 
     public void start() {
@@ -33,8 +36,53 @@ public class App {
                 break;
             }
 
+            // ===== 회원가입 =====
+            if(cmd.equals("member join")) {
+                int id = members.size() + 1;
+                String regDate = Util.getNowDateStr();
+                String loginId = null;
+                String loginPw = null;
+
+                // 아이디 중복체크를 하기 위해 isJoinableLoginId() 메서드를 쓰고
+                while(true) {
+                    System.out.printf("ID : ");
+                    loginId = sc.nextLine();
+
+                    if(isJoinableLoginId(loginId) == false) {
+                        System.out.printf("%s는 이미 사용중입니다. 아이디를 다시 입력해주세요.\n", loginId);
+                        continue;
+                    }
+
+                    break;
+                }
+
+                // PW 입력하고 ConfirmPW를 입력할 때 서로 다르면 다시 입력하도록, 무한루프를 돌린다.
+                // 만약 입력한 두 값이 같다면 무한루프를 빠져나간다.
+                while(true) {
+                    System.out.printf("Password : ");
+                    loginPw = sc.nextLine();
+                    System.out.printf("Password 확인 : ");
+                    String loginPwConfirm = sc.nextLine();
+
+                    if(loginPw.equals(loginPwConfirm) == false) {
+                        System.out.println("비밀번호 확인 결과 다르게 입력하셨습니다. 다시 입력해주세요");
+                        continue;
+                    }
+
+                    break;
+                }
+
+                System.out.printf("이름 : ");
+                String name = sc.nextLine();
+
+                Member member = new Member(id, regDate, loginId, loginPw, name);
+                members.add(member);
+
+                System.out.printf("%d번 회원이 생성되었습니다. 환영합니다!\n", id);
+            }
+
             // ===== 게시물 작성 =====
-            if(cmd.equals("article write")) {
+            else if(cmd.equals("article write")) {
                 int id = articles.size() + 1;
                 String regDate = Util.getNowDateStr();
                 System.out.printf("제목 : ");
@@ -56,44 +104,25 @@ public class App {
                     continue;
                 }
 
-                // searchKeyword에는 article list 뒤에 적은 검색어를 담는다.
-                // split을 사용할 수도 있지만 substring을 통해 시작 인덱스번호 부터 그 뒤 문자열을 모두 가져온다.
-                // 이 때 시작 인덱스번호는 article list의 길이가 13이기 때문에 13을 써도 되지만,
-                // article list라는 문자열을 다른 방식으로 사용자가 커스텀할 수도 있기 때문에,
-                // "article list"의 길이 자체를 시작 인덱스번호로 인자를 넘겨준다.
-                // trim을 붙혀준 이유는 "article list"의 양옆 공백에 상관없이 가져오게 끔 하려고 해준 것이다.
                 String searchKeyword = cmd.substring("article list".length()).trim();
 
-
-                // articles에 연결된 리모콘을 forListArticles에게 넘겨준다는 뜻
-                // forListArticles은 검색어가 포함된 게시물을 담는 새로운 articles 창고다.
                 List<Article> forListArticles = articles;
 
-                // 만약에 article list 다음에 검색어가 존재한다면 새로운 forListArticles에 arraylist를 생성한다.
-                // 검색어가 없다면 그냥 articles가 가진 정보를 그대로 가지고 있는것이다.
                 if(searchKeyword.length() > 0) {
                     forListArticles = new ArrayList<>();
 
-                    // articles에 있는 게시물을 하나씩 차례대로 반복하면서 article 제목에 입력한 검색어가 포함된다면,
-                    // 해당 검색어가 포함된 게시물을 forListArticles에 add한다.
-                    // contains()는 인자에 있는 검색어가 포함되었냐를 확인하는 메서드다.
                     for(Article article : articles) {
                         if(article.title.contains(searchKeyword)) {
                             forListArticles.add(article);
                         }
                     }
 
-                    // 만약 forListArticles에 add된게 없다면(검색어 조회가 안될 때) 게시물이 없다고 출력
                     if(forListArticles.size() == 0) {
                         System.out.printf("검색어 : %s(이)가 포함된 게시물이 존재하지 않습니다.\n", searchKeyword);
                         continue;
                     }
                 }
 
-                // 기존에는 articles을 보여줬지만, 검색어가 담긴 새로운 forListArticles을 보여줘야한다.
-                // 처음에 forListArticles에 articles의 리모콘을 넘겨줬기 때문에 반복문의 보폭을 forListArticles로 변경한다.
-                // 검색어가 없다면 articles을 그냥 옮겨놓은 forListArticles가 출력되는 거고,
-                // 검색어가 있다면 제목에 검색어가 포함된 게시물인 forListArticles가 출력된다.
                 System.out.println("번호 | 조회 | 제목");
                 for(int i = forListArticles.size() - 1; i >= 0 ; i--) {
                     Article article = forListArticles.get(i);
@@ -170,6 +199,29 @@ public class App {
 
         sc.close();
         System.out.println("== 프로그램 끝 ==");
+    }
+
+    private int getMemberIndexByLoginId(String loginId) {
+        int i = 0;
+
+        for(Member member : members) {
+            if(member.loginId.equals(loginId)) {
+                return i;
+            }
+            i++;
+        }
+
+        return -1;
+    }
+
+    private boolean isJoinableLoginId(String loginId) {
+        int index = getMemberIndexByLoginId(loginId);
+
+        if(index == -1) {
+            return true;
+        }
+
+        return false;
     }
 
     private int getArticleIndexById(int id) {

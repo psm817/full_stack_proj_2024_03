@@ -52,11 +52,12 @@ public class Main {
                     continue;
                 }
 
-                System.out.println("번호 | 제목");
+                System.out.println("번호 | 조회 | 제목");
                 for(int i = articles.size() - 1; i >= 0 ; i--) {
                     Article article = articles.get(i);
 
-                    System.out.printf("%d    | %s\n", article.id, article.title);
+                    // %4d는 최소 4칸을 확보하고 간다라는 뜻
+                    System.out.printf("%4d | %4d | %s\n", article.id, article.hit, article.title);
                 }
             }
 
@@ -82,13 +83,17 @@ public class Main {
                     continue;
                 }
 
+                // 조회수 1씩 증가시키기
+                foundArticle.increaseHit();
+
                 System.out.printf("번호 : %d\n", foundArticle.id);
                 System.out.printf("날짜 : %s\n", foundArticle.regDate);
                 System.out.printf("제목 : %s\n", foundArticle.title);
                 System.out.printf("내용 : %s\n", foundArticle.body);
+                System.out.printf("조회 : %d\n", foundArticle.hit);
             }
 
-            // ===== 게시물 수정하기 =====
+            // ===== 게시물 수정 =====
             else if(cmd.startsWith("article modify ")) {
                 String[] cmdBits = cmd.split(" ");
 
@@ -161,11 +166,17 @@ class Article {
     String title;
     String body;
     String regDate;
+    int hit;
 
     public Article(int id, String title, String body, String regDate) {
         this.id = id;
         this.title = title;
         this.body = body;
         this.regDate = regDate;
+        this.hit = 0;
+    }
+
+    public void increaseHit() {
+        hit++;
     }
 }

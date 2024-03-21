@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-// App은 기존 Main에 있던 내용을 가지고 있고, static을 사용하지 않기 때문에 static을 제거한다.
 public class App {
     private List<Article> articles;
 
@@ -70,16 +69,9 @@ public class App {
 
                 int id = Integer.parseInt(cmdBits[2]);
 
-                Article foundArticle = null;
-
-                for(int i = 0; i < articles.size(); i++) {
-                    Article article = articles.get(i);
-
-                    if(article.id == id) {
-                        foundArticle = article;
-                        break;
-                    }
-                }
+                // getArticleById() 메서드는 사용자가 입력한 게시물 번호를 통해 게시물을 가져오는 역할이다.
+                // 가져온 게시물을 foundArticle에 넣어준다.
+                Article foundArticle = getArticleById(id);
 
                 if(foundArticle == null) {
                     System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
@@ -101,16 +93,9 @@ public class App {
 
                 int id = Integer.parseInt(cmdBits[2]);
 
-                Article foundArticle = null;
-
-                for(int i = 0; i < articles.size(); i++) {
-                    Article article = articles.get(i);
-
-                    if(article.id == id) {
-                        foundArticle = article;
-                        break;
-                    }
-                }
+                // getArticleById() 메서드는 사용자가 입력한 게시물 번호를 통해 게시물을 가져오는 역할이다.
+                // 가져온 게시물을 foundArticle에 넣어준다.
+                Article foundArticle = getArticleById(id);
 
                 if(foundArticle == null) {
                     System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
@@ -133,16 +118,9 @@ public class App {
 
                 int id = Integer.parseInt(cmdBits[2]);
 
-                int foundIndex = -1;
-
-                for(int i = 0; i < articles.size(); i++) {
-                    Article article = articles.get(i);
-
-                    if(article.id == id) {
-                        foundIndex = i;
-                        break;
-                    }
-                }
+                // getArticleIndexById() 메서드는 사용자가 입력한 게시물 번호를 통해 게시물의 인덱스 번호를 가져오는 역할이다.
+                // 가져온 게시물을 foundIndex에 넣어준다.
+                int foundIndex = getArticleIndexById(id);
 
                 if(foundIndex == -1) {
                     System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
@@ -160,6 +138,53 @@ public class App {
 
         sc.close();
         System.out.println("== 프로그램 끝 ==");
+    }
+
+    private int getArticleIndexById(int id) {
+        int i = 0;
+
+        // 게시물 article을 articles가 있을 때까지 차례대로 가져오는 것을 반복한다.
+        // 1번 게시물은 0번째 인덱스 번호와 같은 식이기 때문에 i++을 해준다.
+        for(Article article : articles) {
+            if(article.id == id) {
+                return i;
+            }
+            i++;
+        }
+
+        // 찾는 게시물이 없다면 -1을 return한다.
+        return -1;
+    }
+
+    private Article getArticleById(int id) {
+        // getArticleIndexById()을 통해 인덱스 번호를 가져온다.
+        int index = getArticleIndexById(id);
+
+        // index가 -1이 아니면 게시물이 있다는 것이기 때문에 articles.get을 통해 게시물 정보를 리턴한다.
+        // 이렇게 되면 밑에 있는 반복문은 사용할 필요가 없다.
+        // 이미 인덱스를 가져올 때 순회를 했기 때문에
+        if(index != -1) {
+            return articles.get(index);
+        }
+
+//        // 아래 반복문을 향상된 for문으로 코드를 다이어트 시켜준다.
+//        // 게시물 article을 articles가 있을 때까지 차례대로 가져오는 것을 반복한다.
+//        for(Article article : articles) {
+//            if(article.id == id) {
+//                return article;
+//            }
+//        }
+//        for(int i = 0; i < articles.size(); i++) {
+//            Article article = articles.get(i);
+//
+//            // 게시물 번호를 통해 게시물을 찾았다면 article을 return한다.
+//            if(article.id == id) {
+//                return article;
+//            }
+//        }
+
+        // 찾는 게시물이 없다면 null을 return한다.
+        return null;
     }
 
     // 테스트 데이터 만들기

@@ -5,13 +5,21 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    // main 메서드 안에 있던 articles을 Main 클래스의 인스턴스 변수로 꺼내준다.
+    // Main 메서드와 makeTestData에서 같은 articles을 사용하기 때문이다.
+    // articles은 Main 클래스 밖에서 쓸 일이 없기 때문에 private을 써준다.
+    private static List<Article> articles;
+
+    static {
+         articles = new ArrayList<>();
+    }
+
     public static void main(String[] args) {
         System.out.println("== 프로그램 시작 ==");
         Scanner sc = new Scanner(System.in);
 
-        int lastArticleId = 0;
-
-        List<Article> articles = new ArrayList<>();
+        // 테스트 데이터 생성 메서드 호출
+        makeTestData();
 
         while(true) {
             System.out.printf("명령어) ");
@@ -28,8 +36,9 @@ public class Main {
 
             // ===== 게시물 작성 =====
             if(cmd.equals("article write")) {
-                int id = lastArticleId + 1;
-                lastArticleId = id;
+                // 최초에 3개의 테스트 데이터를 만들기 때문에 lastArticleId라는 게 필요없고,
+                // size()를 받아서 번호를 증가시킨다.
+                int id = articles.size() + 1;
 
                 // Util.java에서 만든 getNowDateStr()을 호출하여 regDate에 저장
                 String regDate = Util.getNowDateStr();
@@ -159,6 +168,18 @@ public class Main {
         sc.close();
         System.out.println("== 프로그램 끝 ==");
     }
+
+    // 테스트 데이터 만들기
+    public static void makeTestData() {
+        System.out.println("테스트를 위한 게시물 데이터를 생성합니다.");
+
+        // hit를 추가한 생성자를 오버로딩하여 인자로 테스트 데이터를 넣어준다.
+        // 각각 articles에 저장한다.
+        articles.add(new Article(1, "test1", "Hello", Util.getNowDateStr(), 103));
+        articles.add(new Article(2, "test2", "World", Util.getNowDateStr(), 15));
+        articles.add(new Article(3, "test3", "!!!!!", Util.getNowDateStr(), 62));
+
+    }
 }
 
 class Article {
@@ -168,12 +189,17 @@ class Article {
     String regDate;
     int hit;
 
-    public Article(int id, String title, String body, String regDate) {
+    public Article(int id, String title, String body, String regDate, int hit) {
         this.id = id;
         this.title = title;
         this.body = body;
         this.regDate = regDate;
-        this.hit = 0;
+        this.hit = hit;
+    }
+
+    public Article(int id, String title, String body, String regDate) {
+        // 오버로딩된 Article을 호출하는 this 메서드를 사용해서 hit 값을 0을 준다.
+        this(id, title, body, regDate, 0);
     }
 
     public void increaseHit() {

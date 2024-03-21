@@ -50,15 +50,53 @@ public class App {
             }
 
             // ===== 전체 게시물 조회 =====
-            else if(cmd.equals("article list")) {
+            else if(cmd.startsWith("article list")) {
                 if(articles.size() == 0) {
                     System.out.println("게시물이 없습니다.");
                     continue;
                 }
 
+                // searchKeyword에는 article list 뒤에 적은 검색어를 담는다.
+                // split을 사용할 수도 있지만 substring을 통해 시작 인덱스번호 부터 그 뒤 문자열을 모두 가져온다.
+                // 이 때 시작 인덱스번호는 article list의 길이가 13이기 때문에 13을 써도 되지만,
+                // article list라는 문자열을 다른 방식으로 사용자가 커스텀할 수도 있기 때문에,
+                // "article list"의 길이 자체를 시작 인덱스번호로 인자를 넘겨준다.
+                // trim을 붙혀준 이유는 "article list"의 양옆 공백에 상관없이 가져오게 끔 하려고 해준 것이다.
+                String searchKeyword = cmd.substring("article list".length()).trim();
+
+
+                // articles에 연결된 리모콘을 forListArticles에게 넘겨준다는 뜻
+                // forListArticles은 검색어가 포함된 게시물을 담는 새로운 articles 창고다.
+                List<Article> forListArticles = articles;
+
+                // 만약에 article list 다음에 검색어가 존재한다면 새로운 forListArticles에 arraylist를 생성한다.
+                // 검색어가 없다면 그냥 articles가 가진 정보를 그대로 가지고 있는것이다.
+                if(searchKeyword.length() > 0) {
+                    forListArticles = new ArrayList<>();
+
+                    // articles에 있는 게시물을 하나씩 차례대로 반복하면서 article 제목에 입력한 검색어가 포함된다면,
+                    // 해당 검색어가 포함된 게시물을 forListArticles에 add한다.
+                    // contains()는 인자에 있는 검색어가 포함되었냐를 확인하는 메서드다.
+                    for(Article article : articles) {
+                        if(article.title.contains(searchKeyword)) {
+                            forListArticles.add(article);
+                        }
+                    }
+
+                    // 만약 forListArticles에 add된게 없다면(검색어 조회가 안될 때) 게시물이 없다고 출력
+                    if(forListArticles.size() == 0) {
+                        System.out.printf("검색어 : %s(이)가 포함된 게시물이 존재하지 않습니다.\n", searchKeyword);
+                        continue;
+                    }
+                }
+
+                // 기존에는 articles을 보여줬지만, 검색어가 담긴 새로운 forListArticles을 보여줘야한다.
+                // 처음에 forListArticles에 articles의 리모콘을 넘겨줬기 때문에 반복문의 보폭을 forListArticles로 변경한다.
+                // 검색어가 없다면 articles을 그냥 옮겨놓은 forListArticles가 출력되는 거고,
+                // 검색어가 있다면 제목에 검색어가 포함된 게시물인 forListArticles가 출력된다.
                 System.out.println("번호 | 조회 | 제목");
-                for(int i = articles.size() - 1; i >= 0 ; i--) {
-                    Article article = articles.get(i);
+                for(int i = forListArticles.size() - 1; i >= 0 ; i--) {
+                    Article article = forListArticles.get(i);
                     System.out.printf("%4d | %4d | %s\n", article.id, article.hit, article.title);
                 }
             }
@@ -69,8 +107,6 @@ public class App {
 
                 int id = Integer.parseInt(cmdBits[2]);
 
-                // getArticleById() 메서드는 사용자가 입력한 게시물 번호를 통해 게시물을 가져오는 역할이다.
-                // 가져온 게시물을 foundArticle에 넣어준다.
                 Article foundArticle = getArticleById(id);
 
                 if(foundArticle == null) {
@@ -93,8 +129,6 @@ public class App {
 
                 int id = Integer.parseInt(cmdBits[2]);
 
-                // getArticleById() 메서드는 사용자가 입력한 게시물 번호를 통해 게시물을 가져오는 역할이다.
-                // 가져온 게시물을 foundArticle에 넣어준다.
                 Article foundArticle = getArticleById(id);
 
                 if(foundArticle == null) {
@@ -118,8 +152,6 @@ public class App {
 
                 int id = Integer.parseInt(cmdBits[2]);
 
-                // getArticleIndexById() 메서드는 사용자가 입력한 게시물 번호를 통해 게시물의 인덱스 번호를 가져오는 역할이다.
-                // 가져온 게시물을 foundIndex에 넣어준다.
                 int foundIndex = getArticleIndexById(id);
 
                 if(foundIndex == -1) {
@@ -143,8 +175,6 @@ public class App {
     private int getArticleIndexById(int id) {
         int i = 0;
 
-        // 게시물 article을 articles가 있을 때까지 차례대로 가져오는 것을 반복한다.
-        // 1번 게시물은 0번째 인덱스 번호와 같은 식이기 때문에 i++을 해준다.
         for(Article article : articles) {
             if(article.id == id) {
                 return i;
@@ -152,38 +182,16 @@ public class App {
             i++;
         }
 
-        // 찾는 게시물이 없다면 -1을 return한다.
         return -1;
     }
 
     private Article getArticleById(int id) {
-        // getArticleIndexById()을 통해 인덱스 번호를 가져온다.
         int index = getArticleIndexById(id);
 
-        // index가 -1이 아니면 게시물이 있다는 것이기 때문에 articles.get을 통해 게시물 정보를 리턴한다.
-        // 이렇게 되면 밑에 있는 반복문은 사용할 필요가 없다.
-        // 이미 인덱스를 가져올 때 순회를 했기 때문에
         if(index != -1) {
             return articles.get(index);
         }
 
-//        // 아래 반복문을 향상된 for문으로 코드를 다이어트 시켜준다.
-//        // 게시물 article을 articles가 있을 때까지 차례대로 가져오는 것을 반복한다.
-//        for(Article article : articles) {
-//            if(article.id == id) {
-//                return article;
-//            }
-//        }
-//        for(int i = 0; i < articles.size(); i++) {
-//            Article article = articles.get(i);
-//
-//            // 게시물 번호를 통해 게시물을 찾았다면 article을 return한다.
-//            if(article.id == id) {
-//                return article;
-//            }
-//        }
-
-        // 찾는 게시물이 없다면 null을 return한다.
         return null;
     }
 

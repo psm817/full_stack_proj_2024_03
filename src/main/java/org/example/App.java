@@ -31,8 +31,8 @@ public class App {
             }
 
             String[] cmdBits = cmd.split(" ");
-            String controllerName = cmdBits[0]; // article, member
-            String actionMethodName = cmdBits[1]; // write, list, join ...
+            String controllerName = cmdBits[0];
+            String actionMethodName = cmdBits[1];
 
             Controller controller = null;
 

@@ -38,6 +38,9 @@ public class MemberController extends Controller {
             case "login":
                 doLogin();
                 break;
+            case "logout":
+                doLogout();
+                break;
             default:
                 System.out.println("존재하지 않는 명령어입니다.");
                 break;
@@ -88,6 +91,11 @@ public class MemberController extends Controller {
 
     // ===== 로그인 =====
     public void doLogin() {
+        if(isLogined()) {
+            System.out.println("이미 로그인되어 있습니다.");
+            return;
+        }
+
         System.out.printf("ID : ");
         String loginId = sc.nextLine();
         System.out.printf("Password : ");
@@ -108,6 +116,26 @@ public class MemberController extends Controller {
 
         loginedMember = member;
         System.out.printf("로그인 성공!! %s 님 환영합니다!\n", loginedMember.name);
+    }
+
+    // 지금 프로그램에서 로그인이 되있는지 아닌지 확인
+    private boolean isLogined() {
+        return loginedMember != null;
+    }
+
+    // ===== 로그아웃 =====
+    private void doLogout() {
+        // 로그인할 때 loginedMember에 로그인한 회원 정보를 담아놨기 때문에,
+        // 만약 isLogined() 메서드를 통해 loginedMember가 null이 아니라 어느 member가 들어있는지 확인하고,
+        // loginedMember가 null이라면 로그인 상태가 아니기 때문에 로그아웃을 하지 못하도록 한다.
+        if(isLogined() == false) {
+            System.out.println("로그인 상태가 아닙니다.");
+            return;
+        }
+
+        // 만약 loginedMemeber에 어떤 회원이 들어있다면 로그아웃하기 위해선 로그인 된 loginedMember를 다시 비워준다.
+        loginedMember = null;
+        System.out.println("로그아웃 되었습니다.");
     }
 
     private int getMemberIndexByLoginId(String loginId) {

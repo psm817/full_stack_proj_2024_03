@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MemberController {
-    // App에 있던 members 생성을 컨트롤러로 이전
     private Scanner sc;
     private List<Member> members;
 
@@ -17,7 +16,6 @@ public class MemberController {
         members = new ArrayList<>();
     }
 
-    // App에 있던 member Join 기능을 모두 doJoin() 메서드 안으로 이동
     public void doJoin() {
         int id = members.size() + 1;
         String regDate = Util.getNowDateStr();

@@ -18,6 +18,15 @@ public class ArticleController extends Controller {
         articles = new ArrayList<>();
     }
 
+    // 테스트 데이터 만들기
+    public void makeTestData() {
+        System.out.println("테스트를 위한 게시물 데이터를 생성합니다.");
+
+        articles.add(new Article(1, "test1", "Hello", Util.getNowDateStr(), 103));
+        articles.add(new Article(2, "test2", "World", Util.getNowDateStr(), 15));
+        articles.add(new Article(3, "test3", "!!!!!", Util.getNowDateStr(), 62));
+    }
+
     public void doAction(String cmd, String actionMethodName) {
         this.cmd = cmd;
         this.actionMethodName = actionMethodName;
@@ -42,15 +51,6 @@ public class ArticleController extends Controller {
                 System.out.println("존재하지 않는 명령어입니다.");
                 break;
         }
-    }
-
-    // 테스트 데이터 만들기
-    public void makeTestData() {
-        System.out.println("테스트를 위한 게시물 데이터를 생성합니다.");
-
-        articles.add(new Article(1, "test1", "Hello", Util.getNowDateStr(), 103));
-        articles.add(new Article(2, "test2", "World", Util.getNowDateStr(), 15));
-        articles.add(new Article(3, "test3", "!!!!!", Util.getNowDateStr(), 62));
     }
 
     public void doWrite() {
@@ -104,6 +104,13 @@ public class ArticleController extends Controller {
 
     public void showDetail() {
         String[] cmdBits = cmd.split(" ");
+
+        // 만약 명령어 뒤에 게시물 번호를 입력하지 않거나 이상한 문자가 들어갔을 때
+        if(cmdBits.length <= 2) {
+            System.out.println("조회하고 싶은 게시물 번호를 입력해주세요.");
+            return;
+        }
+
         int id = Integer.parseInt(cmdBits[2]);
 
         Article foundArticle = getArticleById(id);
@@ -124,6 +131,13 @@ public class ArticleController extends Controller {
 
     public void doModify() {
         String[] cmdBits = cmd.split(" ");
+
+        // 만약 명령어 뒤에 게시물 번호를 입력하지 않거나 이상한 문자가 들어갔을 때
+        if(cmdBits.length <= 2) {
+            System.out.println("수정하고 싶은 게시물 번호를 입력해주세요.");
+            return;
+        }
+
         int id = Integer.parseInt(cmdBits[2]);
 
         Article foundArticle = getArticleById(id);
@@ -145,6 +159,13 @@ public class ArticleController extends Controller {
 
     public void doDelete() {
         String[] cmdBits = cmd.split(" ");
+
+        // 만약 명령어 뒤에 게시물 번호를 입력하지 않거나 이상한 문자가 들어갔을 때
+        if(cmdBits.length <= 2) {
+            System.out.println("삭제하고 싶은 게시물 번호를 입력해주세요.");
+            return;
+        }
+
         int id = Integer.parseInt(cmdBits[2]);
 
         int foundIndex = getArticleIndexById(id);

@@ -19,6 +19,14 @@ public class MemberController extends Controller {
         members = new ArrayList<>();
     }
 
+    public void makeTestData() {
+        System.out.println("테스트를 위한 회원 데이터를 생성합니다.");
+
+        members.add(new Member(1, Util.getNowDateStr(), "admin", "admin", "관리자"));
+        members.add(new Member(2, Util.getNowDateStr(), "user1", "user1", "홍길동"));
+        members.add(new Member(3, Util.getNowDateStr(), "user2", "user2", "홍길순"));
+    }
+
     public void doAction(String cmd, String actionMethodName) {
         this.cmd = cmd;
         this.actionMethodName = actionMethodName;
@@ -36,6 +44,7 @@ public class MemberController extends Controller {
         }
     }
 
+    // ===== 회원가입 =====
     public void doJoin() {
         int id = members.size() + 1;
         String regDate = Util.getNowDateStr();
@@ -74,19 +83,18 @@ public class MemberController extends Controller {
         Member member = new Member(id, regDate, loginId, loginPw, name);
         members.add(member);
 
-        System.out.printf("%d번 회원이 생성되었습니다. 환영합니다!\n", id);
+        System.out.printf("%d번째 회원이 생성되었습니다. 환영합니다!\n", id);
     }
 
+    // ===== 로그인 =====
     public void doLogin() {
         System.out.printf("ID : ");
         String loginId = sc.nextLine();
         System.out.printf("Password : ");
         String loginPw = sc.nextLine();
 
-        // 입력받은 아이디에 해당하는 회원이 존재하는지 확인
         Member member = getMemberByLoginId(loginId);
 
-        // 회원이 존재하지 않으면 다시 시도하라는 출력문
         if(member == null) {
             System.out.println("입력하신 ID는 등록되지 않은 ID입니다. 다시 시도해주세요");
             return;
@@ -98,8 +106,6 @@ public class MemberController extends Controller {
             return;
         }
 
-        // 회원이 있다면 전역변수인 loginedMember에 로그인한 member를 연결시켜주고,
-        // 출력문으로 이름을 호출
         loginedMember = member;
         System.out.printf("로그인 성공!! %s 님 환영합니다!\n", loginedMember.name);
     }

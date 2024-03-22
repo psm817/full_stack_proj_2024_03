@@ -4,17 +4,19 @@ public class Article extends Dto {
     public String title;
     public String body;
     public int hit;
+    public int memberId;
 
-    public Article(int id, String title, String body, String regDate, int hit) {
+    public Article(int id, String regDate, int memberId, String title, String body, int hit) {
         this.id = id;
+        this.memberId = memberId;
         this.title = title;
         this.body = body;
         this.regDate = regDate;
         this.hit = hit;
     }
 
-    public Article(int id, String title, String body, String regDate) {
-        this(id, title, body, regDate, 0);
+    public Article(int id, String regDate, int memberId, String title, String body) {
+        this(id, regDate, memberId, title, body, 0);
     }
 
     public void increaseHit() {

@@ -12,7 +12,6 @@ public class MemberController extends Controller {
     private List<Member> members;
     private String cmd;
     private String actionMethodName;
-    private Member loginedMember;
 
     public MemberController(Scanner sc) {
         this.sc = sc;
@@ -108,7 +107,6 @@ public class MemberController extends Controller {
             return;
         }
 
-        // 비밀번호 확인
         if(member.loginPw.equals(loginPw) == false) {
             System.out.println("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
             return;
@@ -118,22 +116,13 @@ public class MemberController extends Controller {
         System.out.printf("로그인 성공!! %s 님 환영합니다!\n", loginedMember.name);
     }
 
-    // 지금 프로그램에서 로그인이 되있는지 아닌지 확인
-    private boolean isLogined() {
-        return loginedMember != null;
-    }
-
     // ===== 로그아웃 =====
     private void doLogout() {
-        // 로그인할 때 loginedMember에 로그인한 회원 정보를 담아놨기 때문에,
-        // 만약 isLogined() 메서드를 통해 loginedMember가 null이 아니라 어느 member가 들어있는지 확인하고,
-        // loginedMember가 null이라면 로그인 상태가 아니기 때문에 로그아웃을 하지 못하도록 한다.
         if(isLogined() == false) {
             System.out.println("로그인 상태가 아닙니다.");
             return;
         }
 
-        // 만약 loginedMemeber에 어떤 회원이 들어있다면 로그아웃하기 위해선 로그인 된 loginedMember를 다시 비워준다.
         loginedMember = null;
         System.out.println("로그아웃 되었습니다.");
     }

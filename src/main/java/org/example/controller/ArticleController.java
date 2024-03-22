@@ -19,14 +19,9 @@ public class ArticleController extends Controller {
     }
 
     public void doAction(String cmd, String actionMethodName) {
-        // cmd를 매개변수로 받으면 전역변수에 cmd 명령어를 저장하고
-        // doAction() 메서드가 실행하면 cmd에는 사용자가 입력한 명령어 cmd에 저장된다.
-        // 그렇게 되면 cmd를 doModify()나 doDelete() 메서드를 호출할 때 이미 전역변수 cmd에 해당 명령어가 있으니
-        // 인자와 메서드 매개변수에 아무것도 입력하지 않아도 된다.
         this.cmd = cmd;
         this.actionMethodName = actionMethodName;
 
-        // App 클래스에서 인자로 넘겨받은 actionMethodName을 switch문을 사용하여 각 기능 메서드를 호출한다.
         switch (actionMethodName) {
             case "write":
                 doWrite();
@@ -42,6 +37,9 @@ public class ArticleController extends Controller {
                 break;
             case "delete":
                 doDelete();
+                break;
+            default:
+                System.out.println("존재하지 않는 명령어입니다.");
                 break;
         }
     }

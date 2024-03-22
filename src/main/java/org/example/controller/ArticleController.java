@@ -7,13 +7,43 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ArticleController {
+public class ArticleController extends Controller {
     private Scanner sc;
     private List<Article> articles;
+    private String cmd;
+    private String actionMethodName;
 
     public ArticleController(Scanner sc) {
         this.sc = sc;
         articles = new ArrayList<>();
+    }
+
+    public void doAction(String cmd, String actionMethodName) {
+        // cmd를 매개변수로 받으면 전역변수에 cmd 명령어를 저장하고
+        // doAction() 메서드가 실행하면 cmd에는 사용자가 입력한 명령어 cmd에 저장된다.
+        // 그렇게 되면 cmd를 doModify()나 doDelete() 메서드를 호출할 때 이미 전역변수 cmd에 해당 명령어가 있으니
+        // 인자와 메서드 매개변수에 아무것도 입력하지 않아도 된다.
+        this.cmd = cmd;
+        this.actionMethodName = actionMethodName;
+
+        // App 클래스에서 인자로 넘겨받은 actionMethodName을 switch문을 사용하여 각 기능 메서드를 호출한다.
+        switch (actionMethodName) {
+            case "write":
+                doWrite();
+                break;
+            case "list":
+                showList();
+                break;
+            case "detail":
+                showDetail();
+                break;
+            case "modify":
+                doModify();
+                break;
+            case "delete":
+                doDelete();
+                break;
+        }
     }
 
     // 테스트 데이터 만들기
@@ -40,7 +70,7 @@ public class ArticleController {
         System.out.printf("%d번 게시물이 생성되었습니다.\n", id);
     }
 
-    public void showList(String cmd) {
+    public void showList() {
         if(articles.size() == 0) {
             System.out.println("게시물이 없습니다.");
             // continue 대신 return을 한다.
@@ -74,9 +104,8 @@ public class ArticleController {
 
     }
 
-    public void showDetail(String cmd) {
+    public void showDetail() {
         String[] cmdBits = cmd.split(" ");
-
         int id = Integer.parseInt(cmdBits[2]);
 
         Article foundArticle = getArticleById(id);
@@ -95,9 +124,8 @@ public class ArticleController {
         System.out.printf("조회 : %d\n", foundArticle.hit);
     }
 
-    public void doModify(String cmd) {
+    public void doModify() {
         String[] cmdBits = cmd.split(" ");
-
         int id = Integer.parseInt(cmdBits[2]);
 
         Article foundArticle = getArticleById(id);
@@ -117,9 +145,8 @@ public class ArticleController {
         System.out.printf("%d번 게시물이 수정되었습니다.\n", id);
     }
 
-    public void doDelete(String cmd) {
+    public void doDelete() {
         String[] cmdBits = cmd.split(" ");
-
         int id = Integer.parseInt(cmdBits[2]);
 
         int foundIndex = getArticleIndexById(id);

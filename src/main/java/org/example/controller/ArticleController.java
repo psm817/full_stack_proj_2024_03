@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+// ArticleController는 App에서만 받아와서 ArticleService에게 전달
 public class ArticleController extends Controller {
     private Scanner sc;
     private String cmd;
@@ -25,9 +26,9 @@ public class ArticleController extends Controller {
     public void makeTestData() {
         System.out.println("테스트를 위한 게시물 데이터를 생성합니다.");
 
-        Container.articleDao.add(new Article(Container.articleDao.getNewId(), Util.getNowDateStr(), 1, "test1", "Hello", 128));
-        Container.articleDao.add(new Article(Container.articleDao.getNewId(), Util.getNowDateStr(), 2, "test2", "World", 18));
-        Container.articleDao.add(new Article(Container.articleDao.getNewId(), Util.getNowDateStr(), 2, "test3", "Good", 53));
+        articleService.add(new Article(articleService.getNewId(), Util.getNowDateStr(), 1, "test1", "Hello", 128));
+        articleService.add(new Article(articleService.getNewId(), Util.getNowDateStr(), 2, "test2", "World", 18));
+        articleService.add(new Article(articleService.getNewId(), Util.getNowDateStr(), 2, "test3", "Good", 53));
     }
 
     public void doAction(String cmd, String actionMethodName) {
@@ -57,7 +58,7 @@ public class ArticleController extends Controller {
     }
 
     public void doWrite() {
-        int id = Container.articleDao.getNewId();
+        int id = articleService.getNewId();
         String regDate = Util.getNowDateStr();
         System.out.printf("제목 : ");
         String title = sc.nextLine();
@@ -66,7 +67,7 @@ public class ArticleController extends Controller {
 
         Article article = new Article(id, regDate, loginedMember.id, title, body);
 
-        Container.articleDao.add(article);
+        articleService.add(article);
 
         System.out.printf("%d번 게시물이 생성되었습니다.\n", id);
     }

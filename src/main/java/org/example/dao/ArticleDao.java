@@ -6,6 +6,7 @@ import org.example.dto.Article;
 import java.util.ArrayList;
 import java.util.List;
 
+// ArticleDao는 ArticleService에서만 받아와서 핵심 기능 메서드 실행
 public class ArticleDao extends Dao {
     private List<Article> articles;
 

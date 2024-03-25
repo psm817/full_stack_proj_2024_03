@@ -47,10 +47,8 @@ public class App {
                 continue;
             }
 
-            // article/list 와 같은 조합을 actionName에 넣는다.
             String actionName = controllerName + "/" + actionMethodName;
 
-            // 로그인이 필요한 기능들은 Controller를 통해 isLogined를 확인한다.
             switch(actionName) {
                 case "article/write" :
                 case "article/modify" :
@@ -63,7 +61,6 @@ public class App {
                     break;
             }
 
-            // 로그아웃이 필요한 기능들은 Controller를 통해 isLogined를 확인한다.
             switch(actionName) {
                 case "member/login" :
                 case "member/join" :

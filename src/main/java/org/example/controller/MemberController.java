@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.Container;
 import org.example.dto.Member;
 import org.example.util.Util;
 
@@ -15,7 +16,8 @@ public class MemberController extends Controller {
 
     public MemberController(Scanner sc) {
         this.sc = sc;
-        members = new ArrayList<>();
+        // 바로 ArrayList를 만들지않고 컨테이너를 통해 List 생성
+        members = Container.memberDao.members;
     }
 
     public void makeTestData() {
@@ -53,11 +55,11 @@ public class MemberController extends Controller {
         String loginId = null;
         String loginPw = null;
 
-        while(true) {
+        while (true) {
             System.out.printf("ID : ");
             loginId = sc.nextLine();
 
-            if(isJoinableLoginId(loginId) == false) {
+            if (isJoinableLoginId(loginId) == false) {
                 System.out.printf("%s는 이미 사용중입니다. 아이디를 다시 입력해주세요.\n", loginId);
                 continue;
             }
@@ -65,13 +67,13 @@ public class MemberController extends Controller {
             break;
         }
 
-        while(true) {
+        while (true) {
             System.out.printf("Password : ");
             loginPw = sc.nextLine();
             System.out.printf("Password 확인 : ");
             String loginPwConfirm = sc.nextLine();
 
-            if(loginPw.equals(loginPwConfirm) == false) {
+            if (loginPw.equals(loginPwConfirm) == false) {
                 System.out.println("비밀번호 확인 결과 다르게 입력하셨습니다. 다시 입력해주세요");
                 continue;
             }
@@ -97,12 +99,12 @@ public class MemberController extends Controller {
 
         Member member = getMemberByLoginId(loginId);
 
-        if(member == null) {
+        if (member == null) {
             System.out.println("입력하신 ID는 등록되지 않은 ID입니다. 다시 시도해주세요");
             return;
         }
 
-        if(member.loginPw.equals(loginPw) == false) {
+        if (member.loginPw.equals(loginPw) == false) {
             System.out.println("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
             return;
         }
@@ -120,8 +122,8 @@ public class MemberController extends Controller {
     private int getMemberIndexByLoginId(String loginId) {
         int i = 0;
 
-        for(Member member : members) {
-            if(member.loginId.equals(loginId)) {
+        for (Member member : members) {
+            if (member.loginId.equals(loginId)) {
                 return i;
             }
             i++;
@@ -133,7 +135,7 @@ public class MemberController extends Controller {
     private boolean isJoinableLoginId(String loginId) {
         int index = getMemberIndexByLoginId(loginId);
 
-        if(index == -1) {
+        if (index == -1) {
             return true;
         }
 
@@ -143,7 +145,7 @@ public class MemberController extends Controller {
     private Member getMemberByLoginId(String loginId) {
         int index = getMemberIndexByLoginId(loginId);
 
-        if(index == -1) {
+        if (index == -1) {
             return null;
         }
 

@@ -1,7 +1,9 @@
 package org.example.controller;
 
+import org.example.Container;
 import org.example.dto.Article;
 import org.example.util.Util;
+import org.example.dto.Member;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,8 @@ public class ArticleController extends Controller {
 
     public ArticleController(Scanner sc) {
         this.sc = sc;
-        articles = new ArrayList<>();
+        // 바로 ArrayList를 만들지않고 컨테이너를 통해 List 생성
+        articles = Container.articleDao.articles;
     }
 
     // 테스트 데이터 만들기
@@ -71,7 +74,6 @@ public class ArticleController extends Controller {
     public void showList() {
         if(articles.size() == 0) {
             System.out.println("게시물이 없습니다.");
-            // continue 대신 return을 한다.
             return;
         }
 
@@ -97,7 +99,21 @@ public class ArticleController extends Controller {
         System.out.println("번호 | 작성자 | 조회 | 제목");
         for(int i = forListArticles.size() - 1; i >= 0 ; i--) {
             Article article = forListArticles.get(i);
-            System.out.printf("%4d | %6d | %4d | %s\n", article.id, article.memberId, article.hit, article.title);
+
+            // Container의 memberDao로 가서 members 배열을 만들기 때문에 모두가 import해서 사용할 수 있다.
+            // writerName은 작성자 이름이고 members 리스트를 컨테이너를 통해 가져오고
+            // 만약 아이디 번호가 같다면 member의 이름을 writerName에 저장한다.
+            String writerName = null;
+
+            List<Member> members = Container.memberDao.members;
+
+            for(Member member : members) {
+                if(article.memberId == member.id) {
+                    writerName = member.name;
+                }
+            }
+
+            System.out.printf("%4d | %s | %4d | %s\n", article.id, writerName, article.hit, article.title);
         }
 
     }
@@ -132,7 +148,6 @@ public class ArticleController extends Controller {
     public void doModify() {
         String[] cmdBits = cmd.split(" ");
 
-        // 만약 명령어 뒤에 게시물 번호를 입력하지 않거나 이상한 문자가 들어갔을 때
         if(cmdBits.length <= 2) {
             System.out.println("수정하고 싶은 게시물 번호를 입력해주세요.");
             return;
@@ -172,7 +187,6 @@ public class ArticleController extends Controller {
 
         int id = Integer.parseInt(cmdBits[2]);
 
-        // 권한 제한을 두기 위해 인덱스 번호가 아니라 foundArticle를 생성
         Article foundArticle = getArticleById(id);
 
         if(foundArticle == null) {

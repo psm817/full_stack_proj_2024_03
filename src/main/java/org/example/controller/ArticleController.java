@@ -33,10 +33,6 @@ public class ArticleController extends Controller {
 
         switch (actionMethodName) {
             case "write":
-                if(isLogined() == false) {
-                    System.out.println("로그인 후 이용해주세요.");
-                    break;
-                }
                 doWrite();
                 break;
             case "list":
@@ -151,7 +147,6 @@ public class ArticleController extends Controller {
             return;
         }
 
-        // 찾은 게시물 id랑 로그인된 id가 같지않다면 해당 기능을 수행하지 못하게 한다.
         if(foundArticle.id != loginedMember.id) {
             System.out.println("권한이 없습니다.");
             return;
@@ -170,7 +165,6 @@ public class ArticleController extends Controller {
     public void doDelete() {
         String[] cmdBits = cmd.split(" ");
 
-        // 만약 명령어 뒤에 게시물 번호를 입력하지 않거나 이상한 문자가 들어갔을 때
         if(cmdBits.length <= 2) {
             System.out.println("삭제하고 싶은 게시물 번호를 입력해주세요.");
             return;

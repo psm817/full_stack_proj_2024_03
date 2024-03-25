@@ -12,7 +12,6 @@ public class MemberDao extends Dao {
         members = new ArrayList<>();
     }
 
-    // 회원을 추가할 때마다 lastId를 1씩 증가한다.
     public void add(Member member) {
         members.add(member);
         lastId++;

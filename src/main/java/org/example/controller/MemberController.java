@@ -22,7 +22,6 @@ public class MemberController extends Controller {
     public void makeTestData() {
         System.out.println("테스트를 위한 회원 데이터를 생성합니다.");
 
-        // 리스트 추가와 id번호를 모두 컨테이너를 통해서 가져온다.
         Container.memberDao.add(new Member(Container.memberDao.getNewId(), Util.getNowDateStr(), "admin", "admin", "관리자"));
         Container.memberDao.add(new Member(Container.memberDao.getNewId(), Util.getNowDateStr(), "user1", "user1", "홍길동"));
         Container.memberDao.add(new Member(Container.memberDao.getNewId(), Util.getNowDateStr(), "user2", "user2", "홍길순"));
@@ -86,8 +85,6 @@ public class MemberController extends Controller {
 
         Member member = new Member(id, regDate, loginId, loginPw, name);
 
-        // members.add를 통해 바로 추가하는 것은 이제 Dao가 할 일이다.
-        // 컨테이너를 통해 member를 add한다.
         Container.memberDao.add(member);
 
         System.out.printf("%d번째 회원이 생성되었습니다. 환영합니다!\n", id);

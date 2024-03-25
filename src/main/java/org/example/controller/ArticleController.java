@@ -17,7 +17,6 @@ public class ArticleController extends Controller {
 
     public ArticleController(Scanner sc) {
         this.sc = sc;
-        // 바로 ArrayList를 만들지않고 컨테이너를 통해 List 생성
         articles = Container.articleDao.articles;
     }
 
@@ -25,9 +24,10 @@ public class ArticleController extends Controller {
     public void makeTestData() {
         System.out.println("테스트를 위한 게시물 데이터를 생성합니다.");
 
-        articles.add(new Article(1, Util.getNowDateStr(), 1, "test1", "Hello", 128));
-        articles.add(new Article(2, Util.getNowDateStr(), 2, "test2", "World", 18));
-        articles.add(new Article(3, Util.getNowDateStr(), 2, "test3", "Good", 53));
+        // 리스트 추가와 id번호를 모두 컨테이너를 통해서 가져온다.
+        Container.articleDao.add(new Article(Container.articleDao.getNewId(), Util.getNowDateStr(), 1, "test1", "Hello", 128));
+        Container.articleDao.add(new Article(Container.articleDao.getNewId(), Util.getNowDateStr(), 2, "test2", "World", 18));
+        Container.articleDao.add(new Article(Container.articleDao.getNewId(), Util.getNowDateStr(), 2, "test3", "Good", 53));
     }
 
     public void doAction(String cmd, String actionMethodName) {
@@ -57,7 +57,8 @@ public class ArticleController extends Controller {
     }
 
     public void doWrite() {
-        int id = articles.size() + 1;
+        // 컨테이너의 articleDao를 타고 들어가서 getNewId()를 통해 id를 가져온다.
+        int id = Container.articleDao.getNewId();
         String regDate = Util.getNowDateStr();
         System.out.printf("제목 : ");
         String title = sc.nextLine();
@@ -66,7 +67,9 @@ public class ArticleController extends Controller {
 
         Article article = new Article(id, regDate, loginedMember.id, title, body);
 
-        articles.add(article);
+        // articles.add를 통해 바로 추가하는 것은 이제 Dao가 할 일이다.
+        // 컨테이너를 통해 article를 add한다.
+        Container.articleDao.add(article);
 
         System.out.printf("%d번 게시물이 생성되었습니다.\n", id);
     }
@@ -96,13 +99,9 @@ public class ArticleController extends Controller {
             }
         }
 
-        System.out.println("번호 | 작성자 | 조회 | 제목");
+        System.out.println("번호 |   작성자 | 조회 | 제목");
         for(int i = forListArticles.size() - 1; i >= 0 ; i--) {
             Article article = forListArticles.get(i);
-
-            // Container의 memberDao로 가서 members 배열을 만들기 때문에 모두가 import해서 사용할 수 있다.
-            // writerName은 작성자 이름이고 members 리스트를 컨테이너를 통해 가져오고
-            // 만약 아이디 번호가 같다면 member의 이름을 writerName에 저장한다.
             String writerName = null;
 
             List<Member> members = Container.memberDao.members;
@@ -113,7 +112,7 @@ public class ArticleController extends Controller {
                 }
             }
 
-            System.out.printf("%4d | %s | %4d | %s\n", article.id, writerName, article.hit, article.title);
+            System.out.printf("%4d | %5s | %4d | %s\n", article.id, writerName, article.hit, article.title);
         }
 
     }
@@ -162,7 +161,7 @@ public class ArticleController extends Controller {
             return;
         }
 
-        if(foundArticle.id != loginedMember.id) {
+        if(foundArticle.memberId != loginedMember.id) {
             System.out.println("권한이 없습니다.");
             return;
         }
@@ -194,7 +193,7 @@ public class ArticleController extends Controller {
             return;
         }
 
-        if(foundArticle.id != loginedMember.id) {
+        if(foundArticle.memberId != loginedMember.id) {
             System.out.println("권한이 없습니다.");
             return;
         }

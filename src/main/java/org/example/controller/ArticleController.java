@@ -22,15 +22,6 @@ public class ArticleController extends Controller {
         articleService = Container.articleService;
     }
 
-    // 테스트 데이터 만들기
-    public void makeTestData() {
-        System.out.println("테스트를 위한 게시물 데이터를 생성합니다.");
-
-        articleService.add(new Article(articleService.getNewId(), Util.getNowDateStr(), 1, "test1", "Hello", 128));
-        articleService.add(new Article(articleService.getNewId(), Util.getNowDateStr(), 2, "test2", "World", 18));
-        articleService.add(new Article(articleService.getNewId(), Util.getNowDateStr(), 2, "test3", "Good", 53));
-    }
-
     public void doAction(String cmd, String actionMethodName) {
         this.cmd = cmd;
         this.actionMethodName = actionMethodName;
@@ -57,6 +48,15 @@ public class ArticleController extends Controller {
         }
     }
 
+    // 테스트 데이터 만들기
+    public void makeTestData() {
+        System.out.println("테스트를 위한 게시물 데이터를 생성합니다.");
+
+        articleService.write(new Article(articleService.getNewId(), Util.getNowDateStr(), 1, "test1", "Hello", 128));
+        articleService.write(new Article(articleService.getNewId(), Util.getNowDateStr(), 2, "test2", "World", 18));
+        articleService.write(new Article(articleService.getNewId(), Util.getNowDateStr(), 2, "test3", "Good", 53));
+    }
+
     public void doWrite() {
         int id = articleService.getNewId();
         String regDate = Util.getNowDateStr();
@@ -67,7 +67,7 @@ public class ArticleController extends Controller {
 
         Article article = new Article(id, regDate, loginedMember.id, title, body);
 
-        articleService.add(article);
+        articleService.write(article);
 
         System.out.printf("%d번 게시물이 생성되었습니다.\n", id);
     }

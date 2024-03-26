@@ -26,8 +26,8 @@ public class ArticleService {
         articleDao.remove(foundArticle);
     }
 
-    public void add(Article article) {
-        articleDao.add(article);
+    public void write(Article article) {
+        articleDao.write(article);
     }
 
     public int getNewId() {

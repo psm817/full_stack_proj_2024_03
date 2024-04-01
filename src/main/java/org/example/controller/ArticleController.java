@@ -52,15 +52,6 @@ public class ArticleController extends Controller {
         }
     }
 
-    // 테스트 데이터 만들기
-    public void makeTestData() {
-        System.out.println("테스트를 위한 게시물 데이터를 생성합니다.");
-
-        articleService.write(new Article(articleService.getNewId(), Util.getNowDateStr(), 1, 1, "test1", "Hello", 128));
-        articleService.write(new Article(articleService.getNewId(), Util.getNowDateStr(), 2, 2, "test2", "World", 18));
-        articleService.write(new Article(articleService.getNewId(), Util.getNowDateStr(), 2, 1, "test3", "Good", 53));
-    }
-
     public void doWrite() {
         int id = articleService.getNewId();
         String regDate = Util.getNowDateStr();

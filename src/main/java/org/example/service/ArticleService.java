@@ -38,4 +38,8 @@ public class ArticleService {
     public int getNewId() {
         return articleDao.getNewId();
     }
+
+    public List<Article> getArticles() {
+        return articleDao.getArticles();
+    }
 }

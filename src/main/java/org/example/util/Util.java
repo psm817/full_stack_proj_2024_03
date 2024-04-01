@@ -3,15 +3,15 @@
 package org.example.util;
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Util {
     // 날짜 가져오기
     public static String getNowDateStr() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date now = new Date();
-        return formatter.format(now);
+        LocalDateTime now = LocalDateTime.now();
+        return now.toString();
     }
 
     // 파일에 내용쓰기

@@ -56,9 +56,9 @@ public class ArticleController extends Controller {
     public void makeTestData() {
         System.out.println("테스트를 위한 게시물 데이터를 생성합니다.");
 
-        articleService.write(new Article(articleService.getNewId(), Util.getNowDateStr(), 1, "test1", "Hello", 128));
-        articleService.write(new Article(articleService.getNewId(), Util.getNowDateStr(), 2, "test2", "World", 18));
-        articleService.write(new Article(articleService.getNewId(), Util.getNowDateStr(), 2, "test3", "Good", 53));
+        articleService.write(new Article(articleService.getNewId(), Util.getNowDateStr(), 1, 1, "test1", "Hello", 128));
+        articleService.write(new Article(articleService.getNewId(), Util.getNowDateStr(), 2, 2, "test2", "World", 18));
+        articleService.write(new Article(articleService.getNewId(), Util.getNowDateStr(), 2, 1, "test3", "Good", 53));
     }
 
     public void doWrite() {
@@ -71,8 +71,9 @@ public class ArticleController extends Controller {
 
         // 세션에서 loginedMember 가져오기
         Member loginedMember = session.getLoginedMember();
+        int boardId = 1;
 
-        Article article = new Article(id, regDate, loginedMember.id, title, body);
+        Article article = new Article(id, regDate, loginedMember.id, boardId, title, body);
 
         articleService.write(article);
 
@@ -80,14 +81,15 @@ public class ArticleController extends Controller {
     }
 
     public void showList() {
-        String searchKeyword = cmd.substring("article list".length()).trim();
+//        String searchKeyword = cmd.substring("article list".length()).trim();
+//        List<Article> forPrintArticles = articleService.getForPrintArticles(searchKeyword);
 
-        List<Article> forPrintArticles = articleService.getForPrintArticles(searchKeyword);
+//        if (forPrintArticles.size() == 0) {
+//            System.out.printf("검색어 : %s(이)가 포함된 게시물이 존재하지 않습니다.\n", searchKeyword);
+//            return;
+//        }
 
-        if (forPrintArticles.size() == 0) {
-            System.out.printf("검색어 : %s(이)가 포함된 게시물이 존재하지 않습니다.\n", searchKeyword);
-            return;
-        }
+        List<Article> forPrintArticles = articleService.getArticles();
 
         System.out.println("번호 |   작성자 | 조회 | 제목");
         for (int i = forPrintArticles.size() - 1; i >= 0; i--) {

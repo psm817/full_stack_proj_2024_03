@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.container.Container;
 import org.example.controller.ArticleController;
 import org.example.controller.Controller;
 import org.example.controller.ExportController;
@@ -65,7 +66,7 @@ public class App {
                 case "article/modify" :
                 case "article/delete" :
                 case "member/logout" :
-                    if(Controller.isLogined() == false) {
+                    if(Container.getSession().isLogined() == false) {
                         System.out.println("로그인 후 이용해주세요.");
                         continue;
                     }
@@ -75,7 +76,7 @@ public class App {
             switch(actionName) {
                 case "member/login" :
                 case "member/join" :
-                    if(Controller.isLogined()) {
+                    if(Container.getSession().isLogined()) {
                         System.out.println("로그아웃 후 이용해주세요.");
                         continue;
                     }

@@ -11,18 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-// ArticleController는 App에서만 받아와서 ArticleService에게 전달
 public class ArticleController extends Controller {
     private Scanner sc;
     private String cmd;
     private String actionMethodName;
     private ArticleService articleService;
     private MemberService memberService;
+    private Session session;
 
     public ArticleController(Scanner sc) {
         this.sc = sc;
         articleService = Container.articleService;
         memberService = Container.memberService;
+        session = Container.getSession();
     }
 
     public void doAction(String cmd, String actionMethodName) {
@@ -67,6 +68,9 @@ public class ArticleController extends Controller {
         String title = sc.nextLine();
         System.out.printf("내용 : ");
         String body = sc.nextLine();
+
+        // 세션에서 loginedMember 가져오기
+        Member loginedMember = session.getLoginedMember();
 
         Article article = new Article(id, regDate, loginedMember.id, title, body);
 
@@ -139,6 +143,8 @@ public class ArticleController extends Controller {
             return;
         }
 
+        Member loginedMember = session.getLoginedMember();
+
         if (foundArticle.memberId != loginedMember.id) {
             System.out.println("권한이 없습니다.");
             return;
@@ -170,6 +176,8 @@ public class ArticleController extends Controller {
             System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
             return;
         }
+
+        Member loginedMember = session.getLoginedMember();
 
         if (foundArticle.memberId != loginedMember.id) {
             System.out.println("권한이 없습니다.");

@@ -53,22 +53,18 @@ public class ArticleController extends Controller {
     }
 
     public void doWrite() {
-        int id = articleService.getNewId();
-        String regDate = Util.getNowDateStr();
         System.out.printf("제목 : ");
         String title = sc.nextLine();
         System.out.printf("내용 : ");
         String body = sc.nextLine();
 
         // 세션에서 loginedMember 가져오기
-        Member loginedMember = session.getLoginedMember();
-        int boardId = 1;
+        int memberId = session.getLoginedMember().getId();
+        int boardId = session.getCurrentBoard().getId();
 
-        Article article = new Article(id, regDate, loginedMember.id, boardId, title, body);
+        int newId = articleService.write(memberId, boardId, title, body);
 
-        articleService.write(article);
-
-        System.out.printf("%d번 게시물이 생성되었습니다.\n", id);
+        System.out.printf("%d번 게시물이 생성되었습니다.\n", newId);
     }
 
     public void showList() {

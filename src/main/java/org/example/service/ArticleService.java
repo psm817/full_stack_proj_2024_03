@@ -3,6 +3,7 @@ package org.example.service;
 import org.example.container.Container;
 import org.example.dao.ArticleDao;
 import org.example.dto.Article;
+import org.example.dto.Board;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,9 @@ public class ArticleService {
         articleDao.remove(foundArticle);
     }
 
-    public void write(Article article) {
-        articleDao.write(article);
+    public int write(int memberId, int boardId, String title, String body) {
+        Article article = new Article(memberId, boardId, title, body);
+        return articleDao.write(article);
     }
 
     public int getNewId() {
@@ -41,5 +43,9 @@ public class ArticleService {
 
     public List<Article> getArticles() {
         return articleDao.getArticles();
+    }
+
+    public Board getBoard(int id) {
+        return articleDao.getBoard(id);
     }
 }

@@ -24,10 +24,6 @@ public class ArticleService {
         return articleDao.getForPrintArticles(null);
     }
 
-    public Article getArticleById(int id) {
-        return articleDao.getArticleById(id);
-    }
-
     public void remove(Article foundArticle) {
         articleDao.remove(foundArticle);
     }
@@ -41,15 +37,28 @@ public class ArticleService {
         return articleDao.getNewId();
     }
 
+    // 게시물 전체 가져오기
     public List<Article> getArticles() {
         return articleDao.getArticles();
+    }
+
+    // 순수하게 article만 가져오는 것
+    public Article getArticle(int id) {
+        return articleDao.getArticle(id);
     }
 
     public Board getBoard(int id) {
         return articleDao.getBoard(id);
     }
 
+    // 조인한 article을 가져오는 것
     public Article getForPrintArticle(int id) {
         return articleDao.getForPrintArticle(id);
     }
+
+    public void modify(int id, String title, String body) {
+        articleDao.modify(id, title, body);
+    }
+
+
 }

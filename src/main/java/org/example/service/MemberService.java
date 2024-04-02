@@ -20,11 +20,7 @@ public class MemberService {
         return memberDao.getMemberByLoginId(loginId);
     }
 
-    public int getNewId() {
-        return memberDao.getNewId();
-    }
-
-    public String getMemberNameById(int memberId) {
-        return null;
+    public Member getMember(int memberId) {
+        return memberDao.getMember(memberId);
     }
 }

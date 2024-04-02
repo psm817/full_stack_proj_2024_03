@@ -45,4 +45,20 @@ public class MemberDao extends Dao {
 
         return new Member(memberRow);
     }
+
+    public Member getMember(int id) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.format("SELECT * "));
+        sb.append(String.format("FROM `member` "));
+        sb.append(String.format("WHERE id = %d ", id));
+
+        Map<String, Object> memberRow = dbConnection.selectRow((sb.toString()));
+
+        if(memberRow.isEmpty()) {
+            return null;
+        }
+
+        return new Member(memberRow);
+    }
 }

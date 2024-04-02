@@ -20,17 +20,14 @@ public class ArticleController extends Controller {
     private MemberService memberService;
     private Session session;
 
-    public ArticleController(Scanner sc) {
-        this.sc = sc;
+    public ArticleController() {
+        sc = Container.getScanner();
         articleService = Container.articleService;
         memberService = Container.memberService;
         session = Container.getSession();
     }
 
     public void doAction(String cmd, String actionMethodName) {
-        this.cmd = cmd;
-        this.actionMethodName = actionMethodName;
-
         switch (actionMethodName) {
             case "write":
                 doWrite();

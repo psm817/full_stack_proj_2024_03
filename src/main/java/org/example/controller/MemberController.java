@@ -11,21 +11,16 @@ import java.util.Scanner;
 
 public class MemberController extends Controller {
     private Scanner sc;
-    private String cmd;
-    private String actionMethodName;
     private MemberService memberService;
     private Session session;
 
-    public MemberController(Scanner sc) {
-        this.sc = sc;
+    public MemberController() {
+        sc = Container.getScanner();
         memberService = Container.memberService;
         session = Container.getSession();
     }
 
     public void doAction(String cmd, String actionMethodName) {
-        this.cmd = cmd;
-        this.actionMethodName = actionMethodName;
-
         switch (actionMethodName) {
             case "join":
                 doJoin();

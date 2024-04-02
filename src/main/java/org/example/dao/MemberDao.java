@@ -9,11 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 public class MemberDao extends Dao {
-    public List<Member> members;
     private DBConnection dbConnection;
 
     public MemberDao() {
-        members = new ArrayList<>();
         dbConnection = Container.getDBConnection();
     }
 

@@ -5,7 +5,6 @@ import org.example.dao.ArticleDao;
 import org.example.dto.Article;
 import org.example.dto.Board;
 
-import java.util.ArrayList;
 import java.util.List;
 
 // ArticleService는 ArticleController에서만 받아와서 ArticleDao에게 전달
@@ -22,10 +21,6 @@ public class ArticleService {
 
     public List<Article> getForPrintArticles() {
         return articleDao.getForPrintArticles(null);
-    }
-
-    public void remove(Article foundArticle) {
-        articleDao.remove(foundArticle);
     }
 
     public int write(int memberId, int boardId, String title, String body) {

@@ -6,7 +6,7 @@ import org.example.dto.Board;
 // 현재 사용자가 이용중인 정보
 // 이 안의 정보는 사용자가 프로그램을 사용할 때 동안은 계속 유지됨.
 public class Session {
-    public Member loginedMember;
+    private Member loginedMember;
     private Board currentBoard;
 
     public Member getLoginedMember() {

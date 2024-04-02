@@ -41,8 +41,8 @@ public class ArticleService {
     }
 
     // 게시물 전체 가져오기
-    public List<Article> getArticles() {
-        return articleDao.getArticles();
+    public List<Article> getArticles(int boardId) {
+        return articleDao.getArticles(boardId);
     }
 
     // 순수하게 article만 가져오는 것

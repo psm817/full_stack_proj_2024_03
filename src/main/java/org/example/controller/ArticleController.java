@@ -15,7 +15,6 @@ import java.util.Scanner;
 public class ArticleController extends Controller {
     private Scanner sc;
     private String cmd;
-    private String actionMethodName;
     private ArticleService articleService;
     private MemberService memberService;
     private Session session;
@@ -28,6 +27,8 @@ public class ArticleController extends Controller {
     }
 
     public void doAction(String cmd, String actionMethodName) {
+        this.cmd = cmd;
+
         switch (actionMethodName) {
             case "write":
                 doWrite();
@@ -60,7 +61,7 @@ public class ArticleController extends Controller {
         String[] cmdBits = cmd.split(" ");
 
         if (cmdBits.length <= 2) {
-            System.out.println("변경하고 싶은 게시판 ID 번호를 입력해주세요.");
+            System.out.println("변경하고 싶은 게시판 버전을 입력해주세요.");
             System.out.println("1 : 공지 / 2 : 자유");
             return;
         }
@@ -107,8 +108,11 @@ public class ArticleController extends Controller {
 //            return;
 //        }
 
-        List<Article> forPrintArticles = articleService.getArticles();
+        List<Article> forPrintArticles = articleService.getArticles(session.getCurrentBoard().id);
 
+        Board board = session.getCurrentBoard();
+
+        System.out.printf("===== %s 게시판 =====\n", board.getName());
         System.out.println("번호 |   작성자 | 조회 | 제목");
         for (int i = forPrintArticles.size() - 1; i >= 0; i--) {
             Article article = forPrintArticles.get(i);

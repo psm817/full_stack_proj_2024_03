@@ -50,10 +50,10 @@ public class ArticleDao extends Dao {
         return new Article(row);
     }
 
-    public List<Article> getArticles() {
+    public List<Article> getArticles(int boardId) {
         StringBuilder sb = new StringBuilder();
 
-        sb.append(String.format("SELECT * FROM article"));
+        sb.append(String.format("SELECT * FROM article WHERE boardId = %d ", boardId));
 
         List<Article> articles = new ArrayList<>();
         List<Map<String, Object>> rows = dbConnection.selectRows(sb.toString());

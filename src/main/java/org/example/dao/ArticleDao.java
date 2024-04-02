@@ -130,4 +130,13 @@ public class ArticleDao extends Dao {
 
         return dbConnection.update(sb.toString());
     }
+
+    public int delete(int id) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.format("DELETE FROM `article` "));
+        sb.append(String.format("WHERE id = %d ", id));
+
+        return dbConnection.delete(sb.toString());
+    }
 }

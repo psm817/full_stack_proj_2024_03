@@ -33,6 +33,14 @@ public class ArticleService {
         return articleDao.write(article);
     }
 
+    public void modify(int id, String title, String body) {
+        articleDao.modify(id, title, body);
+    }
+
+    public void delete(int id) {
+        articleDao.delete(id);
+    }
+
     public int getNewId() {
         return articleDao.getNewId();
     }
@@ -55,10 +63,4 @@ public class ArticleService {
     public Article getForPrintArticle(int id) {
         return articleDao.getForPrintArticle(id);
     }
-
-    public void modify(int id, String title, String body) {
-        articleDao.modify(id, title, body);
-    }
-
-
 }

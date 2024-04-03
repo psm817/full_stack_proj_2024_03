@@ -15,12 +15,8 @@ public class ArticleService {
         articleDao = Container.articleDao;
     }
 
-    public List<Article> getForPrintArticles(String searchKeyword) {
-        return articleDao.getForPrintArticles(searchKeyword);
-    }
-
-    public List<Article> getForPrintArticles() {
-        return articleDao.getForPrintArticles(null);
+    public List<Article> getForPrintArticles(String boardCode, String searchKeyword) {
+        return articleDao.getForPrintArticles(boardCode, searchKeyword);
     }
 
     public int write(int memberId, int boardId, String title, String body) {
@@ -41,8 +37,8 @@ public class ArticleService {
     }
 
     // 게시물 전체 가져오기
-    public List<Article> getArticles(int boardId) {
-        return articleDao.getArticles(boardId);
+    public List<Article> getArticles() {
+        return articleDao.getArticles();
     }
 
     // 순수하게 article만 가져오는 것

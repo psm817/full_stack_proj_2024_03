@@ -61,16 +61,7 @@ public class ArticleController extends Controller {
         System.out.println("2. 자유 게시판");
         System.out.print("게시판 번호를 입력하세요) ");
 
-        int boardId = 0;
-
-        try{
-            boardId = sc.nextInt();
-            sc.nextLine();
-        } catch (InputMismatchException e) {
-            System.out.println("잘못 입력하셨습니다.");
-            sc.nextLine();
-            return;
-        }
+        int boardId = checkScNum();
 
         Board board = articleService.getBoard(boardId);
 
@@ -85,7 +76,7 @@ public class ArticleController extends Controller {
 
     private void doCurrentBoard() {
         Board board = session.getCurrentBoard();
-        System.out.printf("현재 게시판 : %s 게시판\n", board.getName());
+        System.out.printf("현재 게시판 : [%s] 게시판\n", board.getName());
     }
 
     public void doWrite() {
@@ -103,15 +94,15 @@ public class ArticleController extends Controller {
     }
 
     public void showList() {
-//        String searchKeyword = cmd.substring("article list".length()).trim();
-//        List<Article> forPrintArticles = articleService.getForPrintArticles(searchKeyword);
+        String searchKeyword = cmd.substring("article list".length()).trim();
+        String boardCode = Container.getSession().getCurrentBoard().getCode();
 
-//        if (forPrintArticles.size() == 0) {
-//            System.out.printf("검색어 : %s(이)가 포함된 게시물이 존재하지 않습니다.\n", searchKeyword);
-//            return;
-//        }
+        List<Article> forPrintArticles = articleService.getForPrintArticles(boardCode, searchKeyword);
 
-        List<Article> forPrintArticles = articleService.getArticles(session.getCurrentBoard().id);
+        if (forPrintArticles.size() == 0) {
+            System.out.printf("검색어 : %s(이)가 포함된 게시물이 존재하지 않습니다.\n", searchKeyword);
+            return;
+        }
 
         Board board = session.getCurrentBoard();
 
@@ -127,6 +118,7 @@ public class ArticleController extends Controller {
     }
 
     public void showDetail() {
+        System.out.print("조회할 게시물의 번호를 입력하세요) ");
         int id = checkScNum();
 
         if(id == 0) {
@@ -153,6 +145,7 @@ public class ArticleController extends Controller {
     }
 
     public void doModify() {
+        System.out.print("수정하고 싶은 게시물의 번호를 입력하세요) ");
         int id = checkScNum();
 
         if(id == 0) {
@@ -184,6 +177,7 @@ public class ArticleController extends Controller {
     }
 
     public void doDelete() {
+        System.out.print("삭제하고 싶은 게시물의 번호를 입력하세요) ");
         int id = checkScNum();
 
         if(id == 0) {
@@ -210,8 +204,6 @@ public class ArticleController extends Controller {
     }
 
     public int checkScNum() {
-        System.out.print("게시물 번호를 입력하세요) ");
-
         int id = 0;
 
         try{

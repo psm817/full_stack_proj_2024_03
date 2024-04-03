@@ -3,12 +3,10 @@ package org.example.controller;
 import org.example.container.Container;
 import org.example.dto.Article;
 import org.example.dto.Board;
+import org.example.dto.Member;
 import org.example.service.ArticleService;
 import org.example.service.MemberService;
-import org.example.util.Util;
-import org.example.dto.Member;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -96,7 +94,6 @@ public class ArticleController extends Controller {
         System.out.printf("내용 : ");
         String body = sc.nextLine();
 
-        // 세션에서 loginedMember 가져오기
         int memberId = session.getLoginedMember().getId();
         int boardId = session.getCurrentBoard().getId();
 
@@ -130,14 +127,11 @@ public class ArticleController extends Controller {
     }
 
     public void showDetail() {
-        String[] cmdBits = cmd.split(" ");
+        int id = checkScNum();
 
-        if (cmdBits.length <= 2) {
-            System.out.println("조회하고 싶은 게시물 번호를 입력해주세요.");
+        if(id == 0) {
             return;
         }
-
-        int id = Integer.parseInt(cmdBits[2]);
 
         Article foundArticle = articleService.getForPrintArticle(id);
 
@@ -159,14 +153,11 @@ public class ArticleController extends Controller {
     }
 
     public void doModify() {
-        String[] cmdBits = cmd.split(" ");
+        int id = checkScNum();
 
-        if (cmdBits.length <= 2) {
-            System.out.println("수정하고 싶은 게시물 번호를 입력해주세요.");
+        if(id == 0) {
             return;
         }
-
-        int id = Integer.parseInt(cmdBits[2]);
 
         Article foundArticle = articleService.getArticle(id);
 
@@ -193,14 +184,11 @@ public class ArticleController extends Controller {
     }
 
     public void doDelete() {
-        String[] cmdBits = cmd.split(" ");
+        int id = checkScNum();
 
-        if (cmdBits.length <= 2) {
-            System.out.println("삭제하고 싶은 게시물 번호를 입력해주세요.");
+        if(id == 0) {
             return;
         }
-
-        int id = Integer.parseInt(cmdBits[2]);
 
         Article foundArticle = articleService.getArticle(id);
 
@@ -219,5 +207,21 @@ public class ArticleController extends Controller {
         articleService.delete(foundArticle.id);
 
         System.out.printf("%d번 게시물이 삭제되었습니다.\n", id);
+    }
+
+    public int checkScNum() {
+        System.out.print("게시물 번호를 입력하세요) ");
+
+        int id = 0;
+
+        try{
+            id = sc.nextInt();
+            sc.nextLine();
+        } catch (InputMismatchException e) {
+            System.out.println("잘못 입력하셨습니다.");
+            sc.nextLine();
+            return 0;
+        }
+        return id;
     }
 }

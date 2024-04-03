@@ -7,8 +7,6 @@ import org.example.controller.ExportController;
 import org.example.controller.MemberController;
 import org.example.db.DBConnection;
 
-import java.util.Scanner;
-
 public class App {
     public App() {
         DBConnection.DB_NAME = "sbs_proj";
@@ -30,9 +28,9 @@ public class App {
         System.out.println("3. 현재 게시판 버전 확인 : article currBoard");
         System.out.println("4. 게시판 버전 변경 : article chgBoard");
         System.out.println("5. 게시물 전체 조회 : article list");
-        System.out.println("6. 게시물 상세 보기 : article detail [게시물 번호]");
+        System.out.println("6. 게시물 상세 보기 : article detail");
         System.out.println("7. 게시물 작성(로그인 후 이용가능) : article write");
-        System.out.println("8. 게시물 수정/삭제 : article modify/delete [게시물 번호]");
+        System.out.println("8. 게시물 수정/삭제 : article modify/delete");
 
         MemberController memberController = new MemberController();
         ArticleController articleController = new ArticleController();

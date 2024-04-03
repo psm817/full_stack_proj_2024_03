@@ -18,7 +18,7 @@ public class App {
 
         Container.getDBConnection().connect();
 
-        // 현재 게시판을 1번 게시판(공지)으로 선택
+        // 프로그램 시작과 동시의 게시판 타입을 1번(공지)로 설정
         Container.getSession().setCurrentBoard(Container.articleService.getBoard(1));
     }
 

@@ -13,11 +13,14 @@ CREATE TABLE article (
 	INDEX boardId(`boardId`)
 );
 
-INSERT INTO article SET regDate = NOW(), updateDate = NOW(), title = '제목1', `body` = '내용1', memberId = 1, boardId = 1;
-INSERT INTO article SET regDate = NOW(), updateDate = NOW(), title = '제목2', `body` = '내용2', memberId = 2, boardId = 1;
-INSERT INTO article SET regDate = NOW(), updateDate = NOW(), title = '제목3', `body` = '내용3', memberId = 2, boardId = 2;
+ALTER TABLE article ADD COLUMN hit INT(10) UNSIGNED NOT NULL;
+
+INSERT INTO article SET regDate = NOW(), updateDate = NOW(), title = '제목1', `body` = '내용1', memberId = 1, boardId = 1, hit = 2;
+INSERT INTO article SET regDate = NOW(), updateDate = NOW(), title = '제목2', `body` = '내용2', memberId = 2, boardId = 1, hit = 33;
+INSERT INTO article SET regDate = NOW(), updateDate = NOW(), title = '제목3', `body` = '내용3', memberId = 2, boardId = 2, hit = 17;
 
 SELECT * FROM article;
+
 
 CREATE TABLE articleReply (
 id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,

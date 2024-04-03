@@ -28,16 +28,17 @@ CREATE TABLE `article` (
   `body` text NOT NULL,
   `memberId` int(10) unsigned NOT NULL,
   `boardId` int(10) unsigned NOT NULL,
+  `hit` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `boardId` (`boardId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `article` */
 
-insert  into `article`(`id`,`regDate`,`updateDate`,`title`,`body`,`memberId`,`boardId`) values 
-(1,'2024-04-01 16:35:30','2024-04-01 16:35:30','제목1','내용1',1,1),
-(2,'2024-04-01 16:35:30','2024-04-01 16:35:30','제목2','내용2',2,1),
-(3,'2024-04-01 16:35:30','2024-04-01 16:35:30','제목3','내용3',2,2);
+insert  into `article`(`id`,`regDate`,`updateDate`,`title`,`body`,`memberId`,`boardId`,`hit`) values 
+(1,'2024-04-02 18:44:47','2024-04-02 18:44:47','제목1','내용1',1,1,2),
+(2,'2024-04-02 18:44:47','2024-04-02 18:44:47','제목2','내용2',2,1,33),
+(3,'2024-04-02 18:44:47','2024-04-02 18:44:47','제목3','내용3',2,2,17);
 
 /*Table structure for table `articleReply` */
 
@@ -57,8 +58,8 @@ CREATE TABLE `articleReply` (
 /*Data for the table `articleReply` */
 
 insert  into `articleReply`(`id`,`regDate`,`updateDate`,`body`,`memberId`,`articleId`) values 
-(1,'2024-04-01 17:16:52','2024-04-01 17:16:52','댓글1',1,2),
-(2,'2024-04-01 17:16:52','2024-04-01 17:16:52','댓글2',2,1);
+(1,'2024-04-02 18:44:47','2024-04-02 18:44:47','댓글1',1,2),
+(2,'2024-04-02 18:44:47','2024-04-02 18:44:47','댓글2',2,1);
 
 /*Table structure for table `board` */
 
@@ -77,8 +78,8 @@ CREATE TABLE `board` (
 /*Data for the table `board` */
 
 insert  into `board`(`id`,`regDate`,`updateDate`,`code`,`name`) values 
-(1,'2024-04-01 17:15:20','2024-04-01 17:15:20','notice','공지'),
-(2,'2024-04-01 17:15:20','2024-04-01 17:15:20','free','자유');
+(1,'2024-04-02 18:44:47','2024-04-02 18:44:47','notice','공지'),
+(2,'2024-04-02 18:44:47','2024-04-02 18:44:47','free','자유');
 
 /*Table structure for table `member` */
 
@@ -98,9 +99,9 @@ CREATE TABLE `member` (
 /*Data for the table `member` */
 
 insert  into `member`(`id`,`regDate`,`updateDate`,`loginId`,`loginPw`,`name`) values 
-(1,'2024-04-01 17:18:31','2024-04-01 17:18:31','admin','admin','관리자'),
-(2,'2024-04-01 17:18:31','2024-04-01 17:18:31','user1','user1','유저1'),
-(3,'2024-04-01 17:18:31','2024-04-01 17:18:31','user2','user2','유저2');
+(1,'2024-04-02 18:44:47','2024-04-02 18:44:47','admin','admin','관리자'),
+(2,'2024-04-02 18:44:47','2024-04-02 18:44:47','user1','user1','유저1'),
+(3,'2024-04-02 18:44:47','2024-04-02 18:44:47','user2','user2','유저2');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

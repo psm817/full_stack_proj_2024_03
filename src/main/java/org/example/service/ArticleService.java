@@ -3,6 +3,7 @@ package org.example.service;
 import org.example.container.Container;
 import org.example.dao.ArticleDao;
 import org.example.dto.Article;
+import org.example.dto.ArticleReply;
 import org.example.dto.Board;
 
 import java.util.List;
@@ -51,7 +52,16 @@ public class ArticleService {
     }
 
     // 조인한 article을 가져오는 것
-    public Article getForPrintArticle(int id) {
-        return articleDao.getForPrintArticle(id);
+    public Article getForPrintArticle(int articleId) {
+        return articleDao.getForPrintArticle(articleId);
+    }
+
+    // 댓글 관련
+    public int replyWrite(int id, int memberId, String replyBody) {
+        return articleDao.replyWrite(id, memberId, replyBody);
+    }
+
+    public List<ArticleReply> getForPrintArticleReplies(int id) {
+        return articleDao.getForPrintArticleReplies(id);
     }
 }
